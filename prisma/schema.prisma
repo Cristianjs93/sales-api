@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id             Int          @id @default(autoincrement())
+  name           String       @db.VarChar(100)
+  phone          String       @unique @db.VarChar(15)
+  streetAddress1 String       @db.VarChar(255)
+  streetAddress2 String?      @db.VarChar(255)
+  city           String       @db.VarChar(50)
+  state          String       @db.VarChar(50)
+  zipCode        String       @db.VarChar(10)
+  salesOrders    SalesOrder[]
+}
+
+model Item {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique @db.VarChar(100)
+  qty        Int         @default(0)
+  price      Decimal     @db.Decimal(10, 2)
+  salesLines OrderLine[]
+}
+
+model SalesOrder {
+  id         Int         @id @default(autoincrement())
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  customerId Int
+  status     OrderStatus @default(OPEN)
+  total      Decimal     @db.Decimal(10, 2)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
+  salesLines OrderLine[]
+
+  @@unique([id, customerId])
+}
+
+enum OrderStatus {
+  OPEN
+  CLOSED
+}
+
+model OrderLine {
+  id           Int        @id @default(autoincrement())
+  salesOrder   SalesOrder @relation(fields: [salesOrderId], references: [id])
+  salesOrderId Int
+  item         Item       @relation(fields: [itemId], references: [id])
+  itemId       Int
+  quantity     Int
+  price        Decimal    @db.Decimal(10, 2)
+  discount     Decimal    @default(0) @db.Decimal(5, 2)
+  subtotal     Decimal    @db.Decimal(10, 2)
+
+  @@unique([salesOrderId, itemId])
+}

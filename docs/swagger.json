@@ -1,0 +1,373 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/customers": {
+      "get": {
+        "operationId": "CustomerController_findCustomers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Customer"
+        ]
+      },
+      "post": {
+        "operationId": "CustomerController_createCustomer",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerReqDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/api/customers/{id}": {
+      "get": {
+        "operationId": "CustomerController_findCustomerById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Customer"
+        ]
+      },
+      "put": {
+        "operationId": "CustomerController_updateCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerUpdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Customer"
+        ]
+      },
+      "delete": {
+        "operationId": "CustomerController_deleteCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/api/items": {
+      "get": {
+        "operationId": "ItemController_findItems",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Item"
+        ]
+      },
+      "post": {
+        "operationId": "ItemController_createItem",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemReqDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Item"
+        ]
+      }
+    },
+    "/api/items/{id}": {
+      "get": {
+        "operationId": "ItemController_findItemById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Item"
+        ]
+      },
+      "put": {
+        "operationId": "ItemController_updateItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemUpdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Item"
+        ]
+      },
+      "delete": {
+        "operationId": "ItemController_deleteItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Item"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Sales API",
+    "description": "Sales Management",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CustomerReqDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer name",
+            "example": "John Doe"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Customer phone",
+            "example": "+1234567890"
+          },
+          "streetAddress1": {
+            "type": "string",
+            "description": "Primary street address of the customer, including house number and street name",
+            "example": "123 Main St"
+          },
+          "streetAddress2": {
+            "type": "string",
+            "description": "Additional address information for the customer, such as apartment number, suite, or other details that complement the main address",
+            "example": "Apt 4B"
+          },
+          "city": {
+            "type": "string",
+            "description": "City where the customer resides. Should be the name of the city or locality.",
+            "example": "New York"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or region of the customer’s address, represented by its two-letter postal abbreviation.",
+            "example": "NY"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "Postal code for the customer’s address, used for mail delivery. Must follow standard postal code format.",
+            "example": "10001"
+          }
+        },
+        "required": [
+          "name",
+          "phone",
+          "streetAddress1",
+          "streetAddress2",
+          "city",
+          "state",
+          "zipCode"
+        ]
+      },
+      "CustomerUpdDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer name",
+            "example": "John Doe"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Customer phone",
+            "example": "+1234567890"
+          },
+          "streetAddress1": {
+            "type": "string",
+            "description": "Primary street address of the customer, including house number and street name",
+            "example": "123 Main St"
+          },
+          "streetAddress2": {
+            "type": "string",
+            "description": "Additional address information for the customer, such as apartment number, suite, or other details that complement the main address",
+            "example": "Apt 4B"
+          },
+          "city": {
+            "type": "string",
+            "description": "City where the customer resides. Should be the name of the city or locality.",
+            "example": "New York"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or region of the customer’s address, represented by its two-letter postal abbreviation.",
+            "example": "NY"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "Postal code for the customer’s address, used for mail delivery. Must follow standard postal code format.",
+            "example": "10001"
+          }
+        }
+      },
+      "ItemReqDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Item name",
+            "example": "Laptop"
+          },
+          "qty": {
+            "type": "number",
+            "description": "Item quantity",
+            "example": 10
+          },
+          "price": {
+            "type": "number",
+            "description": "Item price",
+            "example": 1200
+          }
+        },
+        "required": [
+          "name",
+          "qty",
+          "price"
+        ]
+      },
+      "ItemUpdDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Item name",
+            "example": "Laptop"
+          },
+          "qty": {
+            "type": "number",
+            "description": "Item quantity",
+            "example": 10
+          },
+          "price": {
+            "type": "number",
+            "description": "Item price",
+            "example": 1200
+          }
+        }
+      }
+    }
+  }
+}
