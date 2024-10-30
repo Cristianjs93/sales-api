@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Customer } from '@prisma/client';
 import { Prisma } from 'src/database/client';
 import { CustomerReqDto, CustomerUpdDto } from 'src/dto/customer.dto';
@@ -29,6 +29,11 @@ export class CustomerService {
           salesOrders: { select: { id: true, status: true, total: true } },
         },
       });
+      if (customer.isDeleted) {
+        throw new BadRequestException(
+          `The customer ${customer.name} is not available`,
+        );
+      }
       return customer;
     } catch (error) {
       handleErrorResponse(error, 'Error fetching the customer');
@@ -63,12 +68,25 @@ export class CustomerService {
 
   async deleteCustomer(id: number): Promise<string> {
     try {
-      await this.prisma.customer.delete({
+      await this.prisma.customer.update({
         where: { id },
+        data: { isDeleted: true },
       });
       return 'Customer deleted successfully';
     } catch (error) {
       handleErrorResponse(error, 'Error deleting the customer');
+    }
+  }
+
+  async restoreCustomer(id: number): Promise<string> {
+    try {
+      await this.prisma.customer.update({
+        where: { id },
+        data: { isDeleted: false },
+      });
+      return 'Customer restored successfully';
+    } catch (error) {
+      handleErrorResponse(error, 'Error restoring the customer');
     }
   }
 }

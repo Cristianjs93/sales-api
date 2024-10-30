@@ -11,6 +11,7 @@ CREATE TABLE "Customer" (
     "city" VARCHAR(50) NOT NULL,
     "state" VARCHAR(50) NOT NULL,
     "zipCode" VARCHAR(10) NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Customer_pkey" PRIMARY KEY ("id")
 );
@@ -21,6 +22,7 @@ CREATE TABLE "Item" (
     "name" VARCHAR(100) NOT NULL,
     "qty" INTEGER NOT NULL DEFAULT 0,
     "price" DECIMAL(10,2) NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
 );
@@ -30,7 +32,7 @@ CREATE TABLE "SalesOrder" (
     "id" SERIAL NOT NULL,
     "customerId" INTEGER NOT NULL,
     "status" "OrderStatus" NOT NULL DEFAULT 'OPEN',
-    "total" DECIMAL(10,2) NOT NULL,
+    "total" DECIMAL(10,2),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

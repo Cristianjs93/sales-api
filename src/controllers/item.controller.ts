@@ -4,6 +4,7 @@ import {
   Post,
   Put,
   Delete,
+  Patch,
   Param,
   Body,
 } from '@nestjs/common';
@@ -75,7 +76,7 @@ export class ItemController {
 
   @Put(':id')
   @ApiOperation({
-    summary: 'Updates a item',
+    summary: 'Updates an item',
   })
   @ApiOkResponse({
     description: 'Item updated successfully',
@@ -92,7 +93,7 @@ export class ItemController {
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Deletes a item',
+    summary: 'Deletes an item',
   })
   @ApiOkResponse({
     description: 'Item deleted successfully',
@@ -101,6 +102,23 @@ export class ItemController {
   async deleteItem(@Param('id') id: string) {
     try {
       const response = await this.itemService.deleteItem(Number(id));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch(':id/restore')
+  @ApiOperation({
+    summary: 'Restores an item',
+  })
+  @ApiOkResponse({
+    description: 'Item restored successfully',
+    example: 'Item restored successfully',
+  })
+  async restoreItem(@Param('id') id: string) {
+    try {
+      const response = await this.itemService.restoreItem(Number(id));
       return response;
     } catch (error) {
       throw error;

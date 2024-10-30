@@ -4,6 +4,7 @@ import {
   Post,
   Put,
   Delete,
+  Patch,
   Param,
   Body,
 } from '@nestjs/common';
@@ -108,6 +109,23 @@ export class CustomerController {
   async deleteCustomer(@Param('id') id: string) {
     try {
       const response = await this.customerService.deleteCustomer(Number(id));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch(':id/restore')
+  @ApiOperation({
+    summary: 'Restores a customer',
+  })
+  @ApiOkResponse({
+    description: 'Customer restored successfully',
+    example: 'Customer restored successfully',
+  })
+  async restoreCustomer(@Param('id') id: string) {
+    try {
+      const response = await this.customerService.restoreCustomer(Number(id));
       return response;
     } catch (error) {
       throw error;

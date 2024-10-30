@@ -16,6 +16,7 @@ model Customer {
   city           String       @db.VarChar(50)
   state          String       @db.VarChar(50)
   zipCode        String       @db.VarChar(10)
+  isDeleted      Boolean      @default(false)
   salesOrders    SalesOrder[]
 }
 
@@ -24,6 +25,7 @@ model Item {
   name       String      @unique @db.VarChar(100)
   qty        Int         @default(0)
   price      Decimal     @db.Decimal(10, 2)
+  isDeleted  Boolean     @default(false)
   salesLines OrderLine[]
 }
 
@@ -32,7 +34,7 @@ model SalesOrder {
   customer   Customer    @relation(fields: [customerId], references: [id])
   customerId Int
   status     OrderStatus @default(OPEN)
-  total      Decimal     @db.Decimal(10, 2)
+  total      Decimal?    @db.Decimal(10, 2)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now())
   salesLines OrderLine[]
