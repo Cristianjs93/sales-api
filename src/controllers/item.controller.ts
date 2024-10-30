@@ -46,7 +46,7 @@ export class ItemController {
   })
   @ApiOkResponse({
     description: 'Item found successfully',
-    type: [ItemResDto],
+    type: ItemResDto,
   })
   async findItemById(@Param('id') id: string): Promise<Item> {
     try {
@@ -63,7 +63,7 @@ export class ItemController {
   })
   @ApiCreatedResponse({
     description: 'Item created successfully',
-    type: [ItemResDto],
+    type: ItemResDto,
   })
   async createItem(@Body() body: ItemReqDto) {
     try {

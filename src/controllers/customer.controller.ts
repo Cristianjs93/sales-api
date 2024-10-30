@@ -50,7 +50,7 @@ export class CustomerController {
   })
   @ApiOkResponse({
     description: 'Customer found successfully',
-    type: [CustomerResDto],
+    type: CustomerResDto,
   })
   async findCustomerById(@Param('id') id: string): Promise<Customer> {
     try {
@@ -67,7 +67,7 @@ export class CustomerController {
   })
   @ApiCreatedResponse({
     description: 'Customer created successfully',
-    type: [CustomerResDto],
+    type: CustomerResDto,
   })
   async createCustomer(@Body() body: CustomerReqDto) {
     try {

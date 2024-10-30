@@ -37,7 +37,7 @@ export class SalesOrderController {
   })
   @ApiCreatedResponse({
     description: 'Order created successfully',
-    type: [SalesOrderResDto],
+    type: SalesOrderResDto,
   })
   async createOrder(@Body() body: SalesOrderReqDto): Promise<SalesOrder> {
     try {
