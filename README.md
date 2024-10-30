@@ -8,6 +8,7 @@ A backend application built with Node.js, NestJS, TypeScript, PostgreSQL and Pri
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Technologies Used](#technologies-used)
+  - [Project Structure](#project-structure)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Running with Docker](#running-with-docker)
@@ -16,6 +17,12 @@ A backend application built with Node.js, NestJS, TypeScript, PostgreSQL and Pri
     - [Customers](#customers)
     - [Items](#items)
     - [Sales Orders](#sales-orders)
+  - [Data Struture](#data-struture)
+    - [Customer](#customer)
+    - [Item](#item)
+    - [SalesOrder](#salesorder)
+    - [OrderStatus](#orderstatus)
+    - [OrderLine](#orderline)
   - [Screenshots](#screenshots)
   - [Contributing](#contributing)
 
@@ -33,6 +40,30 @@ A backend application built with Node.js, NestJS, TypeScript, PostgreSQL and Pri
 - **PostgreSQL**: Relational database for storing data.
 - **Docker**: Platform for developing, shipping, and running applications in containers.
 - **Swagger**: API documentation and testing tool for RESTful services.
+
+## Project Structure
+
+The project file structure is based on a MVC (Model-View-Controller) architecture tailored for backend applications, following the pattern of separating models, controllers and business logic, making it easy to understand, maintain and scale. In addition, NestJS facilitates the modularity of the application by allowing it to be structured in independent and cohesive modules.
+
+```
+sales-api/
+├── src/
+│ ├── config/
+│ ├── controllers/
+│ ├── database/
+│ ├── dto/
+│ ├── modules/
+│ ├── seeders/
+│ ├── services/
+│ ├── utils/
+│ └── app.module.ts
+│ └── main.ts
+├── .env
+├── docker-compose.yml
+├── Dockerfile
+├── tsconfig.json
+└── README.md
+```
 
 ## Installation
 
@@ -175,6 +206,69 @@ A backend application built with Node.js, NestJS, TypeScript, PostgreSQL and Pri
 | GET    | /sales-orders           | Get all orders                |
 | POST   | /sales-orders           | Creates a new order           |
 | PATCH  | /sales-orders/:id/close | Update the status of an order |
+
+## Data Struture
+
+### Customer
+
+| Field          | Type         | Restriction                                   |
+| -------------- | ------------ | --------------------------------------------- |
+| id (PK)        | Integer      | autoincrement()                               |
+| name           | Varchar(100) | Required                                      |
+| phone          | VarChar(15)  | Unique. Required                              |
+| streetAddress1 | VarChar(255) | Required                                      |
+| streetAddress2 | VarChar(255) | Optional                                      |
+| city           | VarChar(50)  | Required                                      |
+| state          | VarChar(50)  | Required                                      |
+| zipCode        | VarChar(10)  | Required                                      |
+| isDeleted      | Boolean      | Control field for soft delete. default(false) |
+| salesOrders    | SalesOrder[] | Relation with `SalesOrder`                    |
+
+### Item
+
+| Field      | Type           | Restriction                                   |
+| ---------- | -------------- | --------------------------------------------- |
+| id (PK)    | Integer        | autoincrement()                               |
+| name       | Varchar(100)   | Unique. Required                              |
+| qty        | Integer        | Required. Must be a positive integer          |
+| price      | Decimal(10, 2) | Required. Must be a positive number           |
+| isDeleted  | Boolean        | Control field for soft delete. default(false) |
+| salesLines | OrderLine[]    | Relation with `OrderLine`                     |
+
+### SalesOrder
+
+| Field           | Type           | Restriction                              |
+| --------------- | -------------- | ---------------------------------------- |
+| id (PK)         | Integer        | autoincrement() Unique([id, customerId]) |
+| customerId (FK) | Integer        | Required. Unique([id, customerId])       |
+| status          | OrderStatus    | default(OPEN)                            |
+| total           | Decimal(10, 2) | Calculated from request data             |
+| createdAt       | DateTime       | Control field. default(now())            |
+| updatedAt       | DateTime       | Control field. default(now())            |
+| salesLines      | OrderLine[]    | Relation with `OrderLine`                |
+
+### OrderStatus
+
+```
+enum OrderStatus {
+  OPEN
+  CLOSED
+}
+```
+
+### OrderLine
+
+| Field             | Type           | Restriction                              |
+| ----------------- | -------------- | ---------------------------------------- |
+| id (PK)           | Integer        | autoincrement()                          |
+| salesOrderId (FK) | Integer        | Required. Unique([salesOrderId, itemId]) |
+| itemId (FK)       | Integer        | Required. Unique([salesOrderId, itemId]) |
+| quantity          | Integer        | Required                                 |
+| price             | Decimal(10, 2) | Required                                 |
+| discount          | Decimal(5, 2)  | default(0)                               |
+| subtotal          | Decimal(10, 2) | Calculated from request data             |
+
+For a detailed description of the required fields of each model and their validation, please refer to the documentation generated by Swagger. The API is fully documented and provides comprehensive information about all endpoints, including required fields, data types, and usage examples. You can also see the Postman Collection [here](https://www.postman.com/cristianjs93/workspace/sales-api/collection/28278263-bb34653d-10ac-4839-b3a4-a3a9f335944b?action=share&creator=28278263)
 
 ## Screenshots
 
